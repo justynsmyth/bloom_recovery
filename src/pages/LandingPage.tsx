@@ -34,21 +34,21 @@ const featureCards = [
   },
 ];
 
-const appSupportCards = [
+const appScreens = [
   {
-    number: "04",
-    title: "Tools that were made for this",
-    body: "Resistance bands, foam roller, stretch strap, massage ball, gel pack, and arnica lotion. Every item is selected for clinical relevance to the injury.",
+    title: "Patient home",
+    subtitle: "Daily progress, routines, and session streaks in one view.",
+    variant: "progress",
   },
   {
-    number: "05",
-    title: "Bloom back to full strength",
-    body: "The program does not stop at basic function. Progressive loading and athlete-minded mobility help patients move from recovered to truly strong.",
+    title: "Recovery plan",
+    subtitle: "Structured exercise blocks with clear progression cues.",
+    variant: "plan",
   },
   {
-    number: "06",
-    title: "Your PT stays in the loop",
-    body: "The Bloom clinic dashboard gives therapists remote visibility into session compliance, so they can see who is following through without extra work.",
+    title: "Clinic dashboard",
+    subtitle: "Therapists can review adherence without extra admin work.",
+    variant: "dashboard",
   },
 ];
 
@@ -58,7 +58,7 @@ const statHighlights = [
     label: "of kit buyers are projected to convert into paid app subscribers",
   },
   {
-    value: "6 mos",
+    value: "6 months",
     label: "average modeled retention during the recovery transition period",
   },
   {
@@ -74,6 +74,8 @@ const plans = [
     subtitle:
       "Full-body mobility and movement restoration for patients recovering from general injury, overuse, or returning to activity after time off.",
     accent: "",
+    image: "/videos/general_recover.png",
+    imageAlt: "General Mobility Kit recovery photo",
     perks: [
       "Resistance loop bands",
       "Stretch strap with 10 loops",
@@ -87,6 +89,8 @@ const plans = [
     slug: "bloom-peak",
     subtitle:
       "For ACL reconstruction, total knee replacement, and meniscus repair. Contents selected around the most common post-surgical knee protocols.",
+    image: "/videos/knee_recover.png",
+    imageAlt: "Knee Recovery Kit recovery photo",
     perks: [
       "Everything in General Mobility",
       "Knee compression sleeve",
@@ -101,6 +105,8 @@ const plans = [
     subtitle:
       "For rotator cuff repair, labrum surgery, and shoulder impingement rehab. Built around the shoulder's unique range-of-motion demands.",
     accent: "",
+    image: "/videos/shoulder_recove.png",
+    imageAlt: "Shoulder Recovery Kit recovery photo",
     perks: [
       "Everything in General Mobility",
       "Resistance tubing for shoulder loading",
@@ -481,11 +487,28 @@ function LandingPage() {
             </div>
 
             <div className="app-loop-grid">
-              {appSupportCards.map((card) => (
-                <article key={card.number} className="app-loop-card">
-                  <span>{card.number}</span>
-                  <h3>{card.title}</h3>
-                  <p>{card.body}</p>
+              {appScreens.map((screen) => (
+                <article key={screen.title} className="app-screen-card">
+                  <div
+                    className={`app-screen-placeholder app-screen-placeholder--${screen.variant}`}
+                    aria-hidden="true"
+                  >
+                    <div className="app-screen-topbar">
+                      <span />
+                      <span />
+                      <span />
+                    </div>
+                    <div className="app-screen-body">
+                      <div className="app-screen-panel app-screen-panel--hero" />
+                      <div className="app-screen-row">
+                        <div className="app-screen-panel app-screen-panel--sm" />
+                        <div className="app-screen-panel app-screen-panel--sm" />
+                      </div>
+                      <div className="app-screen-panel app-screen-panel--wide" />
+                    </div>
+                  </div>
+                  <h3>{screen.title}</h3>
+                  <p>{screen.subtitle}</p>
                 </article>
               ))}
             </div>
@@ -502,10 +525,16 @@ function LandingPage() {
           </div>
 
           <div className="collection-hero-card">
-            <img
-              src="/videos/4boxes.png"
-              alt="Four Bloom Recovery kits in different colors"
-            />
+            <video
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              aria-label="Bloom Recovery collection video"
+            >
+              <source src="/videos/movie.mp4" type="video/mp4" />
+            </video>
           </div>
         </section>
 
@@ -583,8 +612,8 @@ function LandingPage() {
                 ) : null}
                 <h3>{plan.name}</h3>
                 <p className="plan-subtitle">{plan.subtitle}</p>
-                <div className="plan-image-placeholder" aria-hidden="true">
-                  <span>Image placeholder</span>
+                <div className="plan-image-placeholder">
+                  <img src={plan.image} alt={plan.imageAlt} />
                 </div>
                 <ul>
                   {plan.perks.map((perk) => (
