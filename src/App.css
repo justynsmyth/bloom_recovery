@@ -171,6 +171,10 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.18em;
+  line-height: 1.4;
+  max-width: min(22ch, 100%);
+  text-align: left;
+  text-wrap: balance;
 }
 
 .hero-copy h1,
@@ -185,9 +189,12 @@
 }
 
 .hero-copy h1 {
-  max-width: 9ch;
+  max-width: min(8.5ch, 100%);
   font-size: clamp(3.6rem, 7vw, 7rem);
   color: #17141f;
+  overflow-wrap: break-word;
+  text-wrap: pretty;
+  text-align: left;
 }
 
 .hero-copy-spacer {
@@ -292,10 +299,11 @@
 .hero-copy {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   max-width: 500px;
   min-height: 100%;
   padding-top: 0;
-  margin-left: -4%;
+  margin-left: 0;
   position: relative;
   z-index: 4;
 }
@@ -602,7 +610,7 @@
   }
 
   .hero-copy h1 {
-    max-width: 12ch;
+    max-width: min(8.8ch, 100%);
   }
 
   .hero-content {
@@ -615,7 +623,7 @@
   .hero-copy {
     min-height: 62vh;
     padding-top: 0;
-    margin-left: -4%;
+    margin-left: 0;
   }
 
   .hero-left-backdrop {
@@ -667,11 +675,27 @@
   }
 
   .hero-copy {
+    width: 100%;
     min-height: auto;
     padding-top: 0;
+    padding-left: 0.5rem;
     opacity: 1;
     margin-left: 0;
-    max-width: 34rem;
+    max-width: 32rem;
+  }
+
+  .eyebrow {
+    max-width: 24ch;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-wrap: balance;
+  }
+
+  .hero-copy h1 {
+    max-width: min(9ch, 100%);
+    font-size: clamp(2.9rem, 8vw, 4.8rem);
+    line-height: 0.98;
+    text-wrap: balance;
   }
 
   .hero-left-backdrop {
@@ -717,7 +741,9 @@
   }
 
   .hero-copy h1 {
-    font-size: clamp(2.8rem, 17vw, 4.2rem);
+    max-width: min(8.2ch, 100%);
+    font-size: clamp(2.35rem, 11vw, 3.7rem);
+    line-height: 1;
   }
 
   .hero-content {
@@ -728,6 +754,17 @@
 
   .hero-section {
     padding-bottom: 1.25rem;
+  }
+
+  .hero-copy {
+    max-width: 100%;
+    padding-left: 0.25rem;
+  }
+
+  .eyebrow {
+    max-width: 22ch;
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
   }
 
   .hero-visual {
