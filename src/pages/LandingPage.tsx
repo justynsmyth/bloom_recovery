@@ -6,83 +6,83 @@ const navLinks = ["Memberships", "How it works", "Why BLOOM", "Accessories"];
 
 const featureCards = [
   {
-    eyebrow: "Recovery",
-    title: "Quantify how your body is feeling",
-    body: "Daily recovery, strain, and sleep signals give you a clear read on readiness before you train or push harder.",
+    eyebrow: "Guidance",
+    title: "Know what to do after PT ends",
+    body: "Bloom gives patients a structured plan so they know which exercises to do, when to do them, and how to keep progressing at home.",
   },
   {
-    eyebrow: "Healthspan",
-    title: "Extend your prime for years to come",
-    body: "A future-facing block inspired by Bloom Recovery health and longevity positioning, presented with a more editorial visual treatment.",
+    eyebrow: "Accountability",
+    title: "Stay consistent when motivation drops",
+    body: "Built-in progression, reminders, and routines help users keep going through the stretch when most people fall off after discharge.",
   },
   {
-    eyebrow: "Sleep",
-    title: "Optimize your sleep",
-    body: "A dedicated sleep panel keeps the page aligned with Bloom Recovery’s strongest message: recovery starts with better rest.",
+    eyebrow: "Confidence",
+    title: "Reduce fear of doing recovery alone",
+    body: "The system is designed to make patients feel more certain, more supported, and less likely to avoid movement out of fear of reinjury.",
   },
   {
-    eyebrow: "Heart Health",
-    title: "Stay connected to your heart health",
-    body: "A continuous stream of wellness metrics is framed as a premium, low-friction wearable experience.",
+    eyebrow: "Continuity",
+    title: "Continue care beyond insurance coverage",
+    body: "Bloom bridges the gap between formal therapy and full recovery with a premium continuation-of-care experience at home.",
   },
 ];
 
 const collectionCards = [
   {
+    name: "General Mobility Kit",
+    tone: "Full-body mobility and movement restoration for patients recovering from general injury, overuse, or returning to activity after time off.",
+  },
+  {
+    name: "Shoulder Recovery",
+    tone: "Built for rotator cuff repair, labrum surgery, and shoulder impingement rehab with tools selected for shoulder-specific range-of-motion demands.",
+  },
+  {
     name: "Knee Recovery Kit",
-    tone: "Soft compression, guided mobility, and post-session recovery support.",
-  },
-  {
-    name: "Shoulder Recovery Kit",
-    tone: "Targeted tools for upper-body tension, stability, and restoration.",
-  },
-  {
-    name: "Sleep Recovery Kit",
-    tone: "Evening rituals and calming accessories for higher-quality recovery.",
-  },
-  {
-    name: "Black Recovery Kit",
-    tone: "A premium, giftable edition with a darker visual identity.",
+    tone: "Designed for ACL reconstruction, total knee replacement, and meniscus recovery with tools shaped around common post-surgical knee protocols.",
   },
 ];
 
 const plans = [
   {
-    name: "Bloom One",
+    name: "General Mobility Kit",
     slug: "bloom-one",
     subtitle:
-      "Professional-grade fitness insights at an accessible starting point.",
-    accent: "Core performance",
+      "Full-body mobility and movement restoration for patients recovering from general injury, overuse, or returning to activity after time off.",
+    accent: "$25 / month",
     perks: [
-      "Bloom Band with extended battery life",
-      "Sleep, strain, and recovery insights",
-      "Personalized coaching",
-      "VO2 max and heart rate zones",
+      "Resistance loop bands",
+      "Stretch strap with 10 loops",
+      "12-inch foam roller",
+      "Lacrosse massage ball",
+      "Reusable hot/cold gel pack",
     ],
   },
   {
-    name: "Bloom Peak",
+    name: "Knee Recovery Kit",
     slug: "bloom-peak",
     subtitle:
-      "Health, fitness, and longevity features for users who want deeper guidance.",
-    accent: "Most balanced",
+      "For ACL reconstruction, total knee replacement, and meniscus repair. Contents selected around the most common post-surgical knee protocols.",
+    accent: "Most popular",
     perks: [
-      "Everything in One",
-      "Healthspan and pace of aging",
-      "Health Monitor alerts",
-      "Real-time stress tracking",
+      "Everything in General Mobility",
+      "Knee compression sleeve",
+      "Half-round roller for post-op sensitivity",
+      "Terminal knee extension protocol",
+      "Knee-specific app guidance",
     ],
   },
   {
-    name: "Bloom Life",
+    name: "Shoulder Recovery Kit",
     slug: "bloom-life",
-    subtitle: "The medical-grade tier with the strongest health-forward story.",
-    accent: "Medical insights",
+    subtitle:
+      "For rotator cuff repair, labrum surgery, and shoulder impingement rehab. Built around the shoulder's unique range-of-motion demands.",
+    accent: "$25 / month",
     perks: [
-      "Everything in Peak",
-      "Bloom MG hardware",
-      "Daily blood pressure insights",
-      "ECG and irregular rhythm notifications",
+      "Everything in General Mobility",
+      "Resistance tubing for shoulder loading",
+      "Door pulley for overhead mechanics",
+      "Pec minor and trap massage protocol",
+      "Shoulder-specific app guidance",
     ],
   },
 ];
@@ -231,10 +231,10 @@ function LandingPage() {
                   style={{ opacity: leftOverlayOpacity }}
                 />
                 <motion.p className="eyebrow" style={{ color: textColor }}>
-                  Unlock human performance and healthspan
+                  Recovery support after physical therapy
                 </motion.p>
                 <motion.h1 style={{ color: textColor }}>
-                  The wearable designed for lasting progress
+                  Continue healing with structure, guidance, and confidence.
                 </motion.h1>
                 <div className="hero-copy-spacer" aria-hidden="true" />
               </motion.div>
@@ -274,15 +274,16 @@ function LandingPage() {
         >
           <div className="intro-grid">
             <div className="section-heading">
-              <p className="eyebrow">Complete view of your recovery</p>
+              <p className="eyebrow">How it works</p>
               <h2>
-                Everything you need to start feeling better, presented as one
-                considered system.
+                Bloom Recovery bridges the gap between PT discharge and full
+                recovery.
               </h2>
               <p className="section-copy">
-                Bloom Recovery pairs premium recovery tools, guided routines,
-                and beautifully designed kits so the experience feels
-                restorative before you even open the box.
+                Patients leave physical therapy with handouts, uncertainty, and
+                not enough support. Bloom replaces that drop-off with a guided
+                at-home system built to reduce confusion, improve adherence, and
+                help people keep progressing.
               </p>
             </div>
 
@@ -318,35 +319,35 @@ function LandingPage() {
             </div>
 
             <div className="bundle-copy">
-              <p className="eyebrow">Inside the kit</p>
-              <h2>Recovery gear that feels complete from day one.</h2>
+              <p className="eyebrow">Why BLOOM</p>
+              <h2>More than equipment. A continuation-of-care system.</h2>
               <p className="section-copy">
-                Each Bloom Recovery set is built to feel useful immediately: a
-                premium core product, supporting accessories, and a visual
-                system designed to make your routine feel more intentional and
-                less clinical.
+                Bloom is designed for the moment patients are still healing but
+                no longer have regular access to their therapist. The product
+                combines physical tools, a progression plan, and digital support
+                so recovery does not turn into guesswork.
               </p>
 
               <div className="bundle-points">
                 <article>
-                  <strong>Structured routine</strong>
+                  <strong>Structured progression</strong>
                   <p>
-                    Clear, repeatable tools for prehab, cooldown, and ongoing
-                    maintenance.
+                    Patients get a clearer sense of what to do, how often to do
+                    it, and when to progress or scale back.
                   </p>
                 </article>
                 <article>
-                  <strong>Gift-ready presentation</strong>
+                  <strong>Accountability at home</strong>
                   <p>
-                    Packaging designed to feel elevated enough for launch,
-                    retail, and gifting.
+                    Routines, reminders, and digital guidance help users stay
+                    consistent after formal care ends.
                   </p>
                 </article>
                 <article>
-                  <strong>Soft-touch product language</strong>
+                  <strong>Lower-friction recovery</strong>
                   <p>
-                    Pastel-led accessories and materials that feel premium
-                    without feeling sterile.
+                    Bloom is meant to feel calmer, easier to use, and more
+                    approachable than piecing recovery together alone.
                   </p>
                 </article>
               </div>
@@ -357,11 +358,11 @@ function LandingPage() {
         <section className="collection-section" id="accessories">
           <div className="section-heading">
             <p className="eyebrow">Recovery collection</p>
-            <h2>One launch system, four signature kits.</h2>
+            <h2>Three launch kits built around the recovery paths patients face most.</h2>
             <p className="section-copy">
-              The packaging system scales across use cases while keeping the
-              Bloom Recovery identity consistent, giftable, and easy to
-              recognize.
+              The launch collection includes a general mobility option plus
+              knee- and shoulder-specific kits, giving Bloom a clearer clinical
+              story and a more realistic path to product-market fit.
             </p>
           </div>
 
@@ -384,12 +385,12 @@ function LandingPage() {
 
         <section className="membership-section" id="memberships">
           <div className="section-heading">
-            <p className="eyebrow">Choose a membership</p>
-            <h2>Pick the Bloom Recovery tier that matches your routine.</h2>
+            <p className="eyebrow">Choose your kit</p>
+            <h2>Built for your recovery. Specific to your injury.</h2>
             <p className="section-copy">
-              Memberships combine physical kits, digital guidance, and
-              progressively deeper recovery insight. The system is designed to
-              scale from simple habit-building to full premium care.
+              Every kit ships with the Bloom app, a laminated exercise guide
+              card, and a welcome setup. The tools change. The system stays
+              consistent.
             </p>
           </div>
 
@@ -423,12 +424,12 @@ function LandingPage() {
               <div className="membership-aside-copy">
                 <p className="eyebrow">Launch story</p>
                 <h3>
-                  Recovery that feels calmer, softer, and easier to stick with.
+                  Bloom is built to make recovery feel structured, not abandoned.
                 </h3>
                 <p>
-                  The visual identity leans warm and restorative so the launch
-                  page sells not just function, but the feeling of slowing down
-                  and recovering well.
+                  The product is positioned around confidence, accountability,
+                  and continuation of care, giving patients a clearer next step
+                  after discharge instead of leaving them on their own.
                 </p>
               </div>
             </aside>
@@ -438,11 +439,12 @@ function LandingPage() {
 
       <footer className="site-footer" id="footer">
         <div className="site-footer-copy">
-          <p className="eyebrow">Clone project</p>
-          <h2>Bloom Recovery launch page</h2>
+          <p className="eyebrow">Bloom Recovery</p>
+          <h2>Structured recovery support for life after physical therapy.</h2>
           <p>
-            A cleaner launch narrative built around your product photography,
-            packaging system, and premium recovery positioning.
+            Bloom Recovery helps patients continue progressing with guided
+            routines, curated tools, and a digital system designed to reduce
+            fear, confusion, and reinjury risk after discharge.
           </p>
         </div>
         <Link className="button button-primary" to="/subscribe/bloom-one">

@@ -193,7 +193,9 @@
   max-width: min(8.5ch, 100%);
   font-size: clamp(3.6rem, 7vw, 7rem);
   color: #17141f;
-  overflow-wrap: break-word;
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: none;
   text-wrap: pretty;
   text-align: left;
 }
