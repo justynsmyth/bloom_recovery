@@ -77,13 +77,6 @@ const kits = [
   { id: "shoulder",         label: "Shoulder Recovery Kit", description: "For rotator cuff repair, labrum surgery, and shoulder impingement rehab. Built around shoulder range-of-motion demands." },
 ];
 
-const colors = [
-  { id: "light",  label: "Light",       hex: "#f5b8c4" },
-  { id: "medium", label: "Medium",      hex: "#7bc4c4" },
-  { id: "heavy",  label: "Heavy",       hex: "#4a5568" },
-  { id: "mix",    label: "One of each", hex: "#c8b8e8" },
-];
-
 const addOnItems: { id: string; label: string; price: number; description: string }[] = [
   { id: "arnica-lotion",  label: "Arnica Lotion 3-pack",   price: 24, description: "Topical arnica lotion for post-session muscle soreness and inflammation relief." },
   { id: "extra-gel-pack", label: "Extra Hot/Cold Gel Pack", price: 18, description: "Additional reusable gel pack for alternating hot/cold therapy protocols." },
@@ -96,13 +89,6 @@ const allProductImages = [
   "/videos/box_content.png",
   "/videos/4boxes.png",
 ];
-
-const resistanceHero: Record<string, string> = {
-  light:  "/videos/singlebox.png",
-  medium: "/videos/soft_box_natural.png",
-  heavy:  "/videos/box_content.png",
-  mix:    "/videos/4boxes.png",
-};
 
 const billingOptions = [
   { id: "monthly"  as const, label: "Monthly",  sublabel: "Billed each month",     savings: null,  months: 1  },
@@ -339,14 +325,11 @@ function SubscriptionPage() {
 
   const [step, setStep]               = useState(0);
   const [selectedKit, setSelectedKit] = useState(() => slugToKit[planSlug] ?? "general-mobility");
-  const [selectedColor, setSelectedColor] = useState("light");
   const [galleryIndex, setGalleryIndex]   = useState(0);
 
-  const heroImg     = resistanceHero[selectedColor] ?? allProductImages[0];
-  const galleryImages = [heroImg, ...allProductImages.filter(img => img !== heroImg)];
+  const galleryImages = allProductImages;
 
   const handleKitChange   = (id: string) => { setSelectedKit(id);    setGalleryIndex(0); };
-  const handleColorChange = (id: string) => { setSelectedColor(id);  setGalleryIndex(0); };
 
   const [addOns, setAddOns]       = useState<string[]>([]);
   const [billing, setBilling]     = useState<BillingId>("annual");
@@ -442,7 +425,6 @@ function SubscriptionPage() {
         metadata: {
           kit: selectedKit,
           billing,
-          resistance: selectedColor,
           addOns: addOns.join(","),
         },
       }),
@@ -453,7 +435,7 @@ function SubscriptionPage() {
         else setPiError(true);
       })
       .catch(() => setPiError(true));
-  }, [step, clientSecret, total, selectedKit, billing, selectedColor, addOns]);
+  }, [step, clientSecret, total, selectedKit, billing, addOns]);
 
   // Order summary — shared between checkout sidebar and cart
   const orderSummaryNode = (
@@ -466,13 +448,6 @@ function SubscriptionPage() {
         <div className="order-row">
           <span className="order-row-label">Kit</span>
           <span className="order-row-val">{kits.find(k => k.id === selectedKit)?.label}</span>
-        </div>
-        <div className="order-row">
-          <span className="order-row-label">Band resistance</span>
-          <span className="order-row-val order-row-color">
-            <span className="order-swatch" style={{ background: colors.find(c => c.id === selectedColor)?.hex }} />
-            {colors.find(c => c.id === selectedColor)?.label}
-          </span>
         </div>
         <div className="order-row">
           <span className="order-row-label">Subscription</span>
@@ -611,21 +586,6 @@ function SubscriptionPage() {
                 </div>
 
                 <div className="sub-section">
-                  <h2 className="sub-section-title">Band resistance</h2>
-                  <div className="color-grid">
-                    {colors.map(color => (
-                      <button key={color.id} type="button"
-                        className={`color-swatch${selectedColor === color.id ? " selected" : ""}`}
-                        onClick={() => handleColorChange(color.id)}
-                        aria-label={`Select ${color.label}`} aria-pressed={selectedColor === color.id}>
-                        <div className="swatch-dot" style={{ background: color.hex }} />
-                        <span>{color.label}</span>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="sub-section">
                   <h2 className="sub-section-title">
                     Add-ons <span className="sub-optional">(optional)</span>
                   </h2>
@@ -720,12 +680,12 @@ function SubscriptionPage() {
                   <em>your timeline.</em>
                 </h2>
                 <p className="personalize-copy">
-                  We use your surgery type, stage of rehab, and activity goal to tailor the app plan
+                  We use your surgery type, stage of rehab, and activity goal to tailor the recovery plan
                   and keep your PT context attached to the order.
                 </p>
                 <ul className="personalize-bullets">
                   <li>Injury-specific tool selection — not a one-size-fits-all assortment</li>
-                  <li>App program matched to your surgery type, timeline, and activity goal</li>
+                  <li>Recovery program matched to your surgery type, timeline, and activity goal</li>
                   <li>Your PT's clinic linked so they can monitor your compliance remotely</li>
                   <li>Your recovery plan is ready before you check out</li>
                 </ul>
@@ -851,13 +811,6 @@ function SubscriptionPage() {
               <div className="cart-row">
                 <span className="cart-label">Kit</span>
                 <span className="cart-value">{kits.find(k => k.id === selectedKit)?.label}</span>
-              </div>
-              <div className="cart-row">
-                <span className="cart-label">Band resistance</span>
-                <span className="cart-value cart-color-cell">
-                  <span className="cart-swatch" style={{ background: colors.find(c => c.id === selectedColor)?.hex }} />
-                  {colors.find(c => c.id === selectedColor)?.label}
-                </span>
               </div>
               <div className="cart-row">
                 <span className="cart-label">Plan</span>
