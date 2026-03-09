@@ -84,7 +84,7 @@ export default async function handler(request: Request): Promise<Response> {
       },
     });
 
-    return new Response(JSON.stringify({ sessionId: session.id }), {
+    return new Response(JSON.stringify({ sessionId: session.id, url: session.url }), {
       status: 200,
       headers: { "Content-Type": "application/json" },
     });

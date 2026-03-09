@@ -1,8 +1,15 @@
 import { useEffect, useRef, useState } from "react";
+import { CircleCheck } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion, useScroll, useSpring, useTransform } from "motion/react";
 
-const navLinks = ["Memberships", "How it works", "Why BLOOM", "Accessories"];
+const navLinks = [
+  "Memberships",
+  "How it works",
+  "App",
+  "Why BLOOM",
+  "Collection",
+];
 
 const featureCards = [
   {
@@ -42,13 +49,46 @@ const collectionCards = [
   },
 ];
 
+const appSupportCards = [
+  {
+    number: "04",
+    title: "Tools that were made for this",
+    body: "Resistance bands, foam roller, stretch strap, massage ball, gel pack, and arnica lotion. Every item is selected for clinical relevance to the injury.",
+  },
+  {
+    number: "05",
+    title: "Bloom back to full strength",
+    body: "The program does not stop at basic function. Progressive loading and athlete-minded mobility help patients move from recovered to truly strong.",
+  },
+  {
+    number: "06",
+    title: "Your PT stays in the loop",
+    body: "The Bloom clinic dashboard gives therapists remote visibility into session compliance, so they can see who is following through without extra work.",
+  },
+];
+
+const statHighlights = [
+  {
+    value: "60%",
+    label: "of kit buyers are projected to convert into paid app subscribers",
+  },
+  {
+    value: "6 mos",
+    label: "average modeled retention during the recovery transition period",
+  },
+  {
+    value: "4.95x",
+    label: "modeled LTV to CAC ratio from the Bloom financial plan",
+  },
+];
+
 const plans = [
   {
     name: "General Mobility Kit",
     slug: "bloom-one",
     subtitle:
       "Full-body mobility and movement restoration for patients recovering from general injury, overuse, or returning to activity after time off.",
-    accent: "$25 / month",
+    accent: "",
     perks: [
       "Resistance loop bands",
       "Stretch strap with 10 loops",
@@ -62,7 +102,6 @@ const plans = [
     slug: "bloom-peak",
     subtitle:
       "For ACL reconstruction, total knee replacement, and meniscus repair. Contents selected around the most common post-surgical knee protocols.",
-    accent: "Most popular",
     perks: [
       "Everything in General Mobility",
       "Knee compression sleeve",
@@ -76,7 +115,7 @@ const plans = [
     slug: "bloom-life",
     subtitle:
       "For rotator cuff repair, labrum surgery, and shoulder impingement rehab. Built around the shoulder's unique range-of-motion demands.",
-    accent: "$25 / month",
+    accent: "",
     perks: [
       "Everything in General Mobility",
       "Resistance tubing for shoulder loading",
@@ -87,11 +126,55 @@ const plans = [
   },
 ];
 
+const footerColumns = [
+  {
+    title: "Kits",
+    links: [
+      "General Mobility",
+      "Knee Recovery",
+      "Shoulder Recovery",
+      "Back & Mobility",
+      "Build My Plan",
+    ],
+  },
+  {
+    title: "Support",
+    links: [
+      "Member Support",
+      "Order Status",
+      "App Download",
+      "Clinic Login",
+      "FAQ",
+    ],
+  },
+  {
+    title: "Company",
+    links: [
+      "Our Mission",
+      "Careers",
+      "Press",
+      "Partner With Us",
+      "The Bloom Blog",
+    ],
+  },
+  {
+    title: "For Clinics",
+    links: [
+      "Become a Partner",
+      "Clinic Dashboard",
+      "Clinical Evidence",
+      "Corporate Gifting",
+      "Hero Discounts",
+    ],
+  },
+];
+
 function LandingPage() {
   const heroShellRef = useRef<HTMLElement | null>(null);
   const chromeRef = useRef<HTMLDivElement | null>(null);
   const nextSectionRef = useRef<HTMLElement | null>(null);
   const [showFloatingUi, setShowFloatingUi] = useState(true);
+  const [featureStart, setFeatureStart] = useState(0);
   const { scrollYProgress } = useScroll({
     target: heroShellRef,
     offset: ["start start", "end start"],
@@ -129,6 +212,19 @@ function LandingPage() {
   );
   const textY = useTransform(smoothProgress, [0, 1], ["-3%", "-7%"]);
   const textBlur = useTransform(smoothProgress, [0, 0.77], [0, 1.5]);
+  const visibleFeatureCards = Array.from({ length: 3 }, (_, index) => {
+    const cardIndex = (featureStart + index) % featureCards.length;
+    return {
+      ...featureCards[cardIndex],
+      cardIndex,
+    };
+  });
+  const previousFeature =
+    featureCards[
+      (featureStart - 1 + featureCards.length) % featureCards.length
+    ];
+  const nextFeature =
+    featureCards[(featureStart + visibleFeatureCards.length) % featureCards.length];
 
   useEffect(() => {
     let lastY = window.scrollY;
@@ -257,7 +353,10 @@ function LandingPage() {
                   style={{
                     opacity: textOpacity,
                     y: textY,
-                    filter: useTransform(textBlur, (value) => `blur(${value}px)`),
+                    filter: useTransform(
+                      textBlur,
+                      (value) => `blur(${value}px)`,
+                    ),
                   }}
                 >
                   <motion.p
@@ -272,7 +371,11 @@ function LandingPage() {
                   <motion.h1
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.85, delay: 0.16, ease: "easeOut" }}
+                    transition={{
+                      duration: 0.85,
+                      delay: 0.16,
+                      ease: "easeOut",
+                    }}
                     style={{ color: textColor }}
                   >
                     The kit designed for{" "}
@@ -300,14 +403,12 @@ function LandingPage() {
             <div className="section-heading">
               <p className="eyebrow">How it works</p>
               <h2>
-                Bloom Recovery bridges the gap between PT discharge and full
-                recovery.
+                Bloom bridges the gap between PT discharge and full recovery.
               </h2>
               <p className="section-copy">
-                Patients leave physical therapy with handouts, uncertainty, and
-                not enough support. Bloom replaces that drop-off with a guided
-                at-home system built to reduce confusion, improve adherence, and
-                help people keep progressing.
+                After physical therapy ends, many patients are left without
+                enough guidance. Bloom provides a structured{" "}
+                <strong>at-home system</strong> to keep recovery moving.
               </p>
             </div>
 
@@ -319,10 +420,56 @@ function LandingPage() {
             </div>
           </div>
 
-          <div className="feature-grid">
-            {featureCards.map((feature, index) => (
+          <div className="feature-carousel-controls">
+            <button
+              type="button"
+              className="feature-carousel-preview feature-carousel-preview-left"
+              aria-label={`Previous feature: ${previousFeature.title}`}
+              onClick={() =>
+                setFeatureStart(
+                  (current) =>
+                    (current - 1 + featureCards.length) % featureCards.length,
+                )
+              }
+            >
+              <span className="feature-carousel-arrow" aria-hidden="true">
+                ‹
+              </span>
+              <span className="feature-carousel-copy">
+                <span className="feature-carousel-eyebrow">
+                  {previousFeature.eyebrow}
+                </span>
+                <span className="feature-carousel-title">
+                  {previousFeature.title}
+                </span>
+              </span>
+            </button>
+            <button
+              type="button"
+              className="feature-carousel-preview feature-carousel-preview-right"
+              aria-label={`Next feature: ${nextFeature.title}`}
+              onClick={() =>
+                setFeatureStart((current) => (current + 1) % featureCards.length)
+              }
+            >
+              <span className="feature-carousel-copy">
+                <span className="feature-carousel-eyebrow">
+                  {nextFeature.eyebrow}
+                </span>
+                <span className="feature-carousel-title">
+                  {nextFeature.title}
+                </span>
+              </span>
+              <span className="feature-carousel-arrow" aria-hidden="true">
+                ›
+              </span>
+            </button>
+          </div>
+
+          <div className="feature-grid feature-grid-carousel">
+            {visibleFeatureCards.map((feature, index) => (
               <article
-                key={feature.title}
+                key={`${feature.title}-${featureStart}-${index}`}
                 className={`feature-card feature-${index + 1}`}
               >
                 <p className="eyebrow">{feature.eyebrow}</p>
@@ -379,10 +526,97 @@ function LandingPage() {
           </div>
         </section>
 
-        <section className="collection-section" id="accessories">
+        <section className="app-loop-section" id="app">
+          <div className="app-loop-layout">
+            <div className="section-heading app-loop-heading">
+              <p className="eyebrow">The app + your PT</p>
+              <h2>Your therapist stays connected, even after discharge.</h2>
+              <p className="section-copy">
+                Bloom does not stop at a box. The app gives patients visible
+                progress tracking, structured routines, and a clearer sense of
+                what to do next, while the clinic dashboard helps therapists
+                stay in the loop remotely.
+              </p>
+            </div>
+
+            <div className="app-loop-stats">
+              {statHighlights.map((stat) => (
+                <article key={stat.value} className="app-stat-card">
+                  <strong>{stat.value}</strong>
+                  <p>{stat.label}</p>
+                </article>
+              ))}
+            </div>
+
+            <div className="app-loop-grid">
+              {appSupportCards.map((card) => (
+                <article key={card.number} className="app-loop-card">
+                  <span>{card.number}</span>
+                  <h3>{card.title}</h3>
+                  <p>{card.body}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="rental-section">
+          <div className="bundle-layout rental-layout">
+            <div className="bundle-copy">
+              <p className="eyebrow">Rental tools</p>
+              <h2>
+                Access higher-cost recovery tools without forcing every patient
+                to buy them outright.
+              </h2>
+              <p className="section-copy">
+                The Bloom model also supports rentable equipment for products
+                patients may only need during a specific phase of recovery. This
+                creates a more flexible path for at-home care while keeping the
+                system clinically structured. Example rental tools include free
+                weights, a massage gun, and a bench.
+              </p>
+
+              <div className="bundle-points rental-points">
+                <article>
+                  <strong>Rent-to-purchase options</strong>
+                  <p>
+                    Useful for larger tools that lose relevance after a patient
+                    progresses.
+                  </p>
+                </article>
+                <article>
+                  <strong>Custom plan attached</strong>
+                  <p>
+                    Rental equipment can still be tied to a guided at-home
+                    progression plan.
+                  </p>
+                </article>
+                <article>
+                  <strong>Lower upfront burden</strong>
+                  <p>
+                    Makes premium recovery support more accessible for patients
+                    who need flexibility.
+                  </p>
+                </article>
+              </div>
+            </div>
+
+            <div className="bundle-image-card rental-image-card">
+              <img
+                src="/videos/box_content.png"
+                alt="Bloom Recovery kit contents and tools laid out as part of a rentable recovery system"
+              />
+            </div>
+          </div>
+        </section>
+
+        <section className="collection-section" id="collection">
           <div className="section-heading">
             <p className="eyebrow">Recovery collection</p>
-            <h2>Three launch kits built around the recovery paths patients face most.</h2>
+            <h2>
+              Three launch kits built around the recovery paths patients face
+              most.
+            </h2>
             <p className="section-copy">
               The launch collection includes a general mobility option plus
               knee- and shoulder-specific kits, giving Bloom a clearer clinical
@@ -408,72 +642,117 @@ function LandingPage() {
         </section>
 
         <section className="membership-section" id="memberships">
-          <div className="section-heading">
+          <motion.div
+            className="section-heading membership-heading"
+            initial={{ opacity: 0, y: 26 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.45 }}
+            transition={{ duration: 0.7, ease: "easeOut" }}
+          >
             <p className="eyebrow">Choose your kit</p>
             <h2>Built for your recovery. Specific to your injury.</h2>
             <p className="section-copy">
               Every kit ships with the Bloom app, a laminated exercise guide
-              card, and a welcome setup. The tools change. The system stays
-              consistent.
+              card, and a welcome setup.
             </p>
-          </div>
+          </motion.div>
 
-          <div className="plan-layout">
-            <div className="plan-grid">
-              {plans.map((plan) => (
-                <article key={plan.name} className="plan-card">
+          <div className="plan-grid plan-grid--kits">
+            {plans.map((plan) => (
+              <article key={plan.name} className="plan-card">
+                {plan.accent ? (
                   <span className="plan-accent">{plan.accent}</span>
-                  <h3>{plan.name}</h3>
-                  <p className="plan-subtitle">{plan.subtitle}</p>
-                  <ul>
-                    {plan.perks.map((perk) => (
-                      <li key={perk}>{perk}</li>
-                    ))}
-                  </ul>
-                  <div className="plan-actions">
-                    <Link className="button button-primary plan-link" to={`/subscribe/${plan.slug}`}>
-                      Choose tier
-                    </Link>
-                    <a href="#footer">Learn more</a>
-                  </div>
-                </article>
-              ))}
-            </div>
-
-            <aside className="membership-aside">
-              <img
-                src="/videos/soft_box_natural.png"
-                alt="Bloom Recovery product box in a natural lifestyle setting"
-              />
-              <div className="membership-aside-copy">
-                <p className="eyebrow">Launch story</p>
-                <h3>
-                  Bloom is built to make recovery feel structured, not abandoned.
-                </h3>
-                <p>
-                  The product is positioned around confidence, accountability,
-                  and continuation of care, giving patients a clearer next step
-                  after discharge instead of leaving them on their own.
-                </p>
-              </div>
-            </aside>
+                ) : null}
+                <h3>{plan.name}</h3>
+                <p className="plan-subtitle">{plan.subtitle}</p>
+                <div className="plan-image-placeholder" aria-hidden="true">
+                  <span>Image placeholder</span>
+                </div>
+                <ul>
+                  {plan.perks.map((perk) => (
+                    <li key={perk}>
+                      <CircleCheck
+                        className="plan-check-icon"
+                        aria-hidden="true"
+                      />
+                      <span>{perk}</span>
+                    </li>
+                  ))}
+                </ul>
+                <div className="plan-actions">
+                  <Link
+                    className="button button-primary plan-link"
+                    to={`/subscribe/${plan.slug}`}
+                  >
+                    Choose kit
+                  </Link>
+                  <a href="#footer">Learn more</a>
+                </div>
+              </article>
+            ))}
           </div>
+
+          <aside className="membership-aside membership-aside--row">
+            <img
+              src="/videos/soft_box_natural.png"
+              alt="Bloom Recovery product box in a natural lifestyle setting"
+            />
+            <div className="membership-aside-copy">
+              <p className="eyebrow">Launch story</p>
+              <h3>
+                Bloom is built to make recovery feel structured, not abandoned.
+              </h3>
+              <p>
+                The product is positioned around confidence, accountability, and
+                continuation of care, giving patients a clearer next step after
+                discharge instead of leaving them on their own.
+              </p>
+            </div>
+          </aside>
         </section>
       </main>
 
+      <section className="footer-cta-band">
+        <button type="button" className="footer-cta-button">
+          Partner With Bloom
+        </button>
+      </section>
+
       <footer className="site-footer" id="footer">
-        <div className="site-footer-copy">
-          <p className="eyebrow">Bloom Recovery</p>
-          <h2>Structured recovery support for life after physical therapy.</h2>
-          <p>
-            Bloom Recovery helps patients continue progressing with guided
-            routines, curated tools, and a digital system designed to reduce
-            fear, confusion, and reinjury risk after discharge.
-          </p>
+        <div className="site-footer-inner">
+          <div className="site-footer-brand">
+            <h2>Bloom</h2>
+            <p>
+              Our mission is to close the gap between physical therapy discharge
+              and full recovery, one kit at a time.
+            </p>
+            <div className="footer-signup">
+              <input type="email" placeholder="Your email address" />
+              <button type="button">Stay Updated</button>
+            </div>
+          </div>
+
+          {footerColumns.map((column) => (
+            <div key={column.title} className="site-footer-column">
+              <p className="site-footer-label">{column.title}</p>
+              <div className="site-footer-links">
+                {column.links.map((link) => (
+                  <a key={link} href="#footer">
+                    {link}
+                  </a>
+                ))}
+              </div>
+            </div>
+          ))}
         </div>
-        <Link className="button button-primary" to="/subscribe/bloom-one">
-          Launch trial CTA
-        </Link>
+
+        <div className="site-footer-bottom">
+          <p>
+            © 2026 Bloom Recovery Kits · Terms of Use · Privacy Policy · Terms
+            of Sale
+          </p>
+          <span>Los Angeles, CA</span>
+        </div>
       </footer>
     </div>
   );

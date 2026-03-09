@@ -352,7 +352,6 @@ function SubscriptionPage() {
 
   useEffect(() => {
     if (step !== 3 || clientSecret) return;
-    setPiError(false);
     fetch("/api/create-payment-intent", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -372,7 +371,7 @@ function SubscriptionPage() {
         else setPiError(true);
       })
       .catch(() => setPiError(true));
-  }, [step]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [step, clientSecret, total, selectedKit, billing, selectedColor, addOns]);
 
   // Order summary — shared between checkout sidebar and cart
   const orderSummaryNode = (
@@ -650,7 +649,17 @@ function SubscriptionPage() {
 
             <div className="sub-nav">
               <button type="button" className="button button-secondary" onClick={() => setStep(1)}>Back</button>
-              <button type="button" className="button button-primary" onClick={() => setStep(3)}>Continue to checkout</button>
+              <button
+                type="button"
+                className="button button-primary"
+                onClick={() => {
+                  setClientSecret(null);
+                  setPiError(false);
+                  setStep(3);
+                }}
+              >
+                Continue to checkout
+              </button>
             </div>
           </section>
         )}
@@ -666,7 +675,14 @@ function SubscriptionPage() {
             {piError && (
               <div className="payment-error-banner">
                 Could not connect to payment processor. Please check your connection and try again.
-                <button type="button" className="pi-retry-btn" onClick={() => { setClientSecret(null); setPiError(false); setStep(2); setStep(3); }}>
+                <button
+                  type="button"
+                  className="pi-retry-btn"
+                  onClick={() => {
+                    setClientSecret(null);
+                    setPiError(false);
+                  }}
+                >
                   Retry
                 </button>
               </div>

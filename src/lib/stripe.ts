@@ -19,21 +19,24 @@ export async function redirectToCheckout(planSlug: string) {
     body: JSON.stringify({ planSlug }),
   });
 
-  const data = (await response.json()) as { error?: string; sessionId?: string };
+  const data = (await response.json()) as {
+    error?: string;
+    sessionId?: string;
+    url?: string | null;
+  };
 
-  if (!response.ok || !data.sessionId) {
+  if (!response.ok) {
     throw new Error(data.error ?? "Unable to start checkout.");
   }
 
-  const stripe = await stripePromise;
-
-  if (!stripe) {
-    throw new Error("Stripe failed to initialize.");
+  if (data.url) {
+    window.location.assign(data.url);
+    return;
   }
 
-  const result = await stripe.redirectToCheckout({ sessionId: data.sessionId });
-
-  if (result.error) {
-    throw new Error(result.error.message ?? "Stripe redirect failed.");
+  if (!data.sessionId) {
+    throw new Error("Stripe checkout session was created without a redirect URL.");
   }
+
+  throw new Error("Stripe redirect URL was not returned.");
 }
