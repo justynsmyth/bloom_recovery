@@ -116,18 +116,19 @@ function LandingPage() {
     [0, 0.29, 0.77],
     [1, 1, 0.62],
   );
-  const leftOverlayOpacity = useTransform(
-    smoothProgress,
-    [0, 0.29, 0.77],
-    [0, 0, 1],
-  );
   const textOpacity = useTransform(smoothProgress, [0, 0.29, 0.77], [1, 1, 1]);
   const textColor = useTransform(
     smoothProgress,
-    [0, 0.29, 0.77],
-    ["#17141f", "#17141f", "#000000"],
+    [0, 0.29, 0.58, 0.77],
+    ["#17141f", "#17141f", "#f7edf3", "#f7edf3"],
   );
-  const textY = useTransform(smoothProgress, [0, 1], ["-5%", "-7%"]);
+  const textAccentColor = useTransform(
+    smoothProgress,
+    [0, 0.29, 0.58, 0.77],
+    ["#ef7da0", "#ef7da0", "#8fe7ff", "#8fe7ff"],
+  );
+  const textY = useTransform(smoothProgress, [0, 1], ["-3%", "-7%"]);
+  const textBlur = useTransform(smoothProgress, [0, 0.77], [0, 1.5]);
 
   useEffect(() => {
     let lastY = window.scrollY;
@@ -221,24 +222,7 @@ function LandingPage() {
       <main>
         <section ref={heroShellRef} className="hero-shell">
           <section className="hero-section">
-            <div className="hero-content">
-              <motion.div
-                className="hero-copy"
-                style={{ opacity: textOpacity, y: textY }}
-              >
-                <motion.div
-                  className="hero-copy-fade"
-                  style={{ opacity: leftOverlayOpacity }}
-                />
-                <motion.p className="eyebrow" style={{ color: textColor }}>
-                  Recovery support after physical therapy
-                </motion.p>
-                <motion.h1 style={{ color: textColor }}>
-                  Continue healing with structure, guidance, and confidence.
-                </motion.h1>
-                <div className="hero-copy-spacer" aria-hidden="true" />
-              </motion.div>
-
+            <div className="hero-frame">
               <div className="hero-visual" aria-hidden="true">
                 <motion.video
                   className="hero-video"
@@ -263,8 +247,48 @@ function LandingPage() {
                   style={{ opacity: overlayOpacity }}
                 />
               </div>
+
+              <div className="hero-content">
+                <motion.div
+                  className="hero-copy"
+                  initial={{ opacity: 0, y: 28 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, ease: "easeOut" }}
+                  style={{
+                    opacity: textOpacity,
+                    y: textY,
+                    filter: useTransform(textBlur, (value) => `blur(${value}px)`),
+                  }}
+                >
+                  <motion.p
+                    className="eyebrow"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.65, delay: 0.1, ease: "easeOut" }}
+                    style={{ color: textColor }}
+                  >
+                    Your Recovery. Your Pace. Your Program.
+                  </motion.p>
+                  <motion.h1
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.85, delay: 0.16, ease: "easeOut" }}
+                    style={{ color: textColor }}
+                  >
+                    The kit designed for{" "}
+                    <motion.span style={{ color: textAccentColor }}>
+                      lasting recovery.
+                    </motion.span>
+                  </motion.h1>
+                  <div className="hero-copy-spacer" aria-hidden="true" />
+                </motion.div>
+              </div>
             </div>
           </section>
+          <motion.div
+            className="hero-shell-fade"
+            style={{ opacity: overlayOpacity }}
+          />
         </section>
 
         <section
