@@ -112,14 +112,67 @@ const billingOptions = [
 
 type BillingId = "monthly" | "annual" | "twoYear";
 
-const STEPS = ["Customize", "Choose Plan", "Cart", "Checkout"];
+const STEPS = ["Customize", "Choose Plan", "Personalize", "Cart", "Checkout"];
 
-// Types 
+// Types
 
 type ContactForm = {
   name: string; email: string; phone: string;
   address: string; city: string; state: string; zip: string;
 };
+
+type PersonalizeForm = {
+  therapistName: string;
+  therapistLocation: string;
+  injuryType: string;
+  surgeryType: string;
+  weeksPostOp: string;
+  activityGoal: string;
+};
+
+const injuryOptions = [
+  "ACL Tear", "Meniscus Tear", "Rotator Cuff Tear", "Labrum Tear",
+  "Total Knee Replacement", "Total Hip Replacement", "Shoulder Replacement",
+  "Fracture / ORIF", "General Overuse", "Other",
+];
+
+const surgeryOptions = [
+  "ACL Reconstruction", "Meniscus Repair", "Rotator Cuff Repair", "Labrum Repair",
+  "Total Knee Arthroplasty", "Total Hip Arthroplasty", "Shoulder Arthroplasty",
+  "ORIF (Open Reduction)", "No Surgery", "Other",
+];
+
+const activityGoals = [
+  {
+    id: "daily-function",
+    label: "Daily Function",
+    description: "Restore comfortable movement for everyday tasks — walking, stairs, carrying groceries, getting back to routine.",
+    icon: "🏡",
+  },
+  {
+    id: "active-lifestyle",
+    label: "Active Lifestyle",
+    description: "Return to gym workouts, hiking, recreational sports, and an active social life without limitations.",
+    icon: "🏃",
+  },
+  {
+    id: "peak-performance",
+    label: "Peak Performance",
+    description: "Full competitive return — sport-specific training, agility drills, and maximizing athletic output.",
+    icon: "🏆",
+  },
+];
+
+const recoveryTimelineOptions = [
+  "Less than 1 week",
+  "1-2 weeks",
+  "3-4 weeks",
+  "5-8 weeks",
+  "9-12 weeks",
+  "3-6 months",
+  "6-12 months",
+  "1+ year",
+];
 
 // CheckoutPaymentForm (must be inside <Elements> to use Stripe hooks) 
 
@@ -299,6 +352,35 @@ function SubscriptionPage() {
   const [billing, setBilling]     = useState<BillingId>("annual");
   const [submitted, setSubmitted] = useState(false);
 
+  const [personalizeForm, setPersonalizeForm] = useState<PersonalizeForm>({
+    therapistName: "",
+    therapistLocation: "",
+    injuryType: "",
+    surgeryType: "",
+    weeksPostOp: "",
+    activityGoal: "",
+  });
+  const [personalizeErrors, setPersonalizeErrors] = useState<Record<string, string>>({});
+
+  const handlePersonalizeChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setPersonalizeForm(prev => ({ ...prev, [name]: value }));
+    if (personalizeErrors[name]) {
+      setPersonalizeErrors(prev => ({ ...prev, [name]: "" }));
+    }
+  };
+
+  const validatePersonalize = (f: PersonalizeForm): Record<string, string> => {
+    const e: Record<string, string> = {};
+    if (!f.therapistName.trim()) e.therapistName = "Therapist name is required";
+    if (!f.therapistLocation.trim()) e.therapistLocation = "Office location is required";
+    if (!f.injuryType) e.injuryType = "Select an injury type";
+    if (!f.surgeryType) e.surgeryType = "Select a surgery type";
+    if (!f.weeksPostOp) e.weeksPostOp = "Select your recovery timeline";
+    if (!f.activityGoal) e.activityGoal = "Choose an activity goal";
+    return e;
+  };
+
   const [form, setForm] = useState<ContactForm>({
     name: "", email: "", phone: "",
     address: "", city: "", state: "", zip: "",
@@ -351,7 +433,7 @@ function SubscriptionPage() {
   const [piError, setPiError] = useState(false);
 
   useEffect(() => {
-    if (step !== 3 || clientSecret) return;
+    if (step !== 4 || clientSecret) return;
     fetch("/api/create-payment-intent", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -398,6 +480,20 @@ function SubscriptionPage() {
             ${pricePerMonth}/mo · {billingOpt.label.toLowerCase()}
           </span>
         </div>
+        {personalizeForm.injuryType && (
+          <div className="order-row">
+            <span className="order-row-label">Injury</span>
+            <span className="order-row-val">{personalizeForm.injuryType}</span>
+          </div>
+        )}
+        {personalizeForm.activityGoal && (
+          <div className="order-row">
+            <span className="order-row-label">Goal</span>
+            <span className="order-row-val">
+              {activityGoals.find(goal => goal.id === personalizeForm.activityGoal)?.label}
+            </span>
+          </div>
+        )}
         {addOnItems.filter(a => addOns.includes(a.id)).map(addon => (
           <div key={addon.id} className="order-row">
             <span className="order-row-label">{addon.label}</span>
@@ -597,13 +693,150 @@ function SubscriptionPage() {
 
             <div className="sub-nav">
               <button type="button" className="button button-secondary" onClick={() => setStep(0)}>Back</button>
-              <button type="button" className="button button-primary" onClick={() => setStep(2)}>Continue to cart</button>
+              <button type="button" className="button button-primary" onClick={() => setStep(2)}>Continue to personalize</button>
             </div>
           </section>
         )}
 
-        {/* Step 2: Cart */}
+        {/* Step 2: Personalize */}
         {step === 2 && (
+          <section className="sub-step-panel sub-step-panel--wide">
+            <div className="sub-step-heading">
+              <p className="eyebrow">Personalized recovery</p>
+              <h1>Your kit. <em>Built around your injury.</em></h1>
+              <p className="section-copy">
+                No two recoveries are the same. Tell us about your injury, your goals, and your physical
+                therapist — and we'll build a recovery plan matched to exactly where you are.
+              </p>
+            </div>
+
+            <div className="personalize-layout">
+              {/* Left: selling points */}
+              <div className="personalize-sidebar">
+                <p className="personalize-kicker">Personalized recovery</p>
+                <h2>
+                  A plan shaped around
+                  {" "}
+                  <em>your timeline.</em>
+                </h2>
+                <p className="personalize-copy">
+                  We use your surgery type, stage of rehab, and activity goal to tailor the app plan
+                  and keep your PT context attached to the order.
+                </p>
+                <ul className="personalize-bullets">
+                  <li>Injury-specific tool selection — not a one-size-fits-all assortment</li>
+                  <li>App program matched to your surgery type, timeline, and activity goal</li>
+                  <li>Your PT's clinic linked so they can monitor your compliance remotely</li>
+                  <li>Your recovery plan is ready before you check out</li>
+                </ul>
+              </div>
+
+              {/* Right: form */}
+              <div className="personalize-form-card">
+                <h2 className="personalize-form-title">Build my recovery plan</h2>
+                <p className="personalize-form-sub">Takes about 60 seconds</p>
+
+                <div className="form-row-2">
+                  <div className="form-group">
+                    <label htmlFor="injuryType">Injury type</label>
+                    <select id="injuryType" name="injuryType"
+                      className={`personalize-select${personalizeErrors.injuryType ? " error" : ""}`}
+                      value={personalizeForm.injuryType}
+                      onChange={handlePersonalizeChange}>
+                      <option value="">Select injury</option>
+                      {injuryOptions.map(o => <option key={o} value={o}>{o}</option>)}
+                    </select>
+                    {personalizeErrors.injuryType && <span className="field-error">{personalizeErrors.injuryType}</span>}
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="surgeryType">Surgery</label>
+                    <select id="surgeryType" name="surgeryType"
+                      className={`personalize-select${personalizeErrors.surgeryType ? " error" : ""}`}
+                      value={personalizeForm.surgeryType}
+                      onChange={handlePersonalizeChange}>
+                      <option value="">Select one</option>
+                      {surgeryOptions.map(o => <option key={o} value={o}>{o}</option>)}
+                    </select>
+                    {personalizeErrors.surgeryType && <span className="field-error">{personalizeErrors.surgeryType}</span>}
+                  </div>
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="weeksPostOp">Weeks post-op / post-injury</label>
+                  <select id="weeksPostOp" name="weeksPostOp"
+                    className={`personalize-select${personalizeErrors.weeksPostOp ? " error" : ""}`}
+                    value={personalizeForm.weeksPostOp}
+                    onChange={handlePersonalizeChange}>
+                      <option value="">Select weeks</option>
+                    {recoveryTimelineOptions.map(o => (
+                      <option key={o} value={o}>{o}</option>
+                    ))}
+                  </select>
+                  {personalizeErrors.weeksPostOp && <span className="field-error">{personalizeErrors.weeksPostOp}</span>}
+                </div>
+
+                <div className="form-group">
+                  <label>Activity goal</label>
+                  <div className="activity-goal-grid">
+                    {activityGoals.map(goal => (
+                      <button key={goal.id} type="button"
+                        className={`activity-goal-card${personalizeForm.activityGoal === goal.id ? " selected" : ""}${personalizeErrors.activityGoal ? " error" : ""}`}
+                        onClick={() => {
+                          setPersonalizeForm(prev => ({ ...prev, activityGoal: goal.id }));
+                          setPersonalizeErrors(prev => ({ ...prev, activityGoal: "" }));
+                        }}
+                        aria-pressed={personalizeForm.activityGoal === goal.id}>
+                        <span className="activity-goal-icon">{goal.icon}</span>
+                        <strong>{goal.label}</strong>
+                        <p>{goal.description}</p>
+                      </button>
+                    ))}
+                  </div>
+                  {personalizeErrors.activityGoal && <span className="field-error">{personalizeErrors.activityGoal}</span>}
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="therapistName">PT / Referring therapist name</label>
+                  <input id="therapistName" name="therapistName" type="text"
+                    className={`personalize-input${personalizeErrors.therapistName ? " error" : ""}`}
+                    placeholder="e.g. Dr. Sarah Chen"
+                    value={personalizeForm.therapistName}
+                    onChange={handlePersonalizeChange} />
+                  {personalizeErrors.therapistName && <span className="field-error">{personalizeErrors.therapistName}</span>}
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="therapistLocation">PT clinic / office location</label>
+                  <input id="therapistLocation" name="therapistLocation" type="text"
+                    className={`personalize-input${personalizeErrors.therapistLocation ? " error" : ""}`}
+                    placeholder="e.g. Westside PT, San Francisco CA"
+                    value={personalizeForm.therapistLocation}
+                    onChange={handlePersonalizeChange} />
+                  {personalizeErrors.therapistLocation && <span className="field-error">{personalizeErrors.therapistLocation}</span>}
+                </div>
+              </div>
+            </div>
+
+            <div className="sub-nav">
+              <button type="button" className="button button-secondary" onClick={() => setStep(1)}>Back</button>
+              <button
+                type="button"
+                className="button button-primary"
+                onClick={() => {
+                  const errors = validatePersonalize(personalizeForm);
+                  setPersonalizeErrors(errors);
+                  if (Object.keys(errors).length > 0) return;
+                  setStep(3);
+                }}
+              >
+                Continue to cart
+              </button>
+            </div>
+          </section>
+        )}
+
+        {/* Step 3: Cart */}
+        {step === 3 && (
           <section className="sub-step-panel">
             <div className="sub-step-heading">
               <p className="eyebrow">Review your order</p>
@@ -633,6 +866,32 @@ function SubscriptionPage() {
                   {billing === "monthly" ? "billed monthly" : billing === "annual" ? "billed annually" : "billed every 2 years"}
                 </span>
               </div>
+              {personalizeForm.injuryType && (
+                <div className="cart-row">
+                  <span className="cart-label">Injury type</span>
+                  <span className="cart-value">{personalizeForm.injuryType}</span>
+                </div>
+              )}
+              {personalizeForm.surgeryType && (
+                <div className="cart-row">
+                  <span className="cart-label">Surgery type</span>
+                  <span className="cart-value">{personalizeForm.surgeryType}</span>
+                </div>
+              )}
+              {personalizeForm.weeksPostOp && (
+                <div className="cart-row">
+                  <span className="cart-label">Recovery timeline</span>
+                  <span className="cart-value">{personalizeForm.weeksPostOp}</span>
+                </div>
+              )}
+              {personalizeForm.activityGoal && (
+                <div className="cart-row">
+                  <span className="cart-label">Activity goal</span>
+                  <span className="cart-value">
+                    {activityGoals.find(goal => goal.id === personalizeForm.activityGoal)?.label}
+                  </span>
+                </div>
+              )}
               {addOnItems.filter(a => addOns.includes(a.id)).map(addon => (
                 <div key={addon.id} className="cart-row">
                   <span className="cart-label">{addon.label}</span>
@@ -648,14 +907,14 @@ function SubscriptionPage() {
             </div>
 
             <div className="sub-nav">
-              <button type="button" className="button button-secondary" onClick={() => setStep(1)}>Back</button>
+              <button type="button" className="button button-secondary" onClick={() => setStep(2)}>Back</button>
               <button
                 type="button"
                 className="button button-primary"
                 onClick={() => {
                   setClientSecret(null);
                   setPiError(false);
-                  setStep(3);
+                  setStep(4);
                 }}
               >
                 Continue to checkout
@@ -664,8 +923,8 @@ function SubscriptionPage() {
           </section>
         )}
 
-        {/* Step 3: Checkout */}
-        {step === 3 && (
+        {/* Step 4: Checkout */}
+        {step === 4 && (
           <section className="sub-step-panel sub-step-panel--wide">
             <div className="sub-step-heading">
               <p className="eyebrow">Secure checkout</p>
@@ -698,7 +957,7 @@ function SubscriptionPage() {
                   validateShipping={validateShipping}
                   total={total}
                   orderSummaryNode={orderSummaryNode}
-                  onBack={() => setStep(2)}
+                  onBack={() => setStep(3)}
                   onSuccess={() => setSubmitted(true)}
                 />
               </Elements>
