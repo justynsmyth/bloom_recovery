@@ -15,37 +15,22 @@ const featureCards = [
   {
     eyebrow: "Guidance",
     title: "Know what to do after PT ends",
-    body: "Bloom gives patients a structured plan so they know which exercises to do, when to do them, and how to keep progressing at home.",
+    body: "Bloom gives patients a clear plan for what to do, when to do it, and how to keep progressing at home.",
   },
   {
     eyebrow: "Accountability",
     title: "Stay consistent when motivation drops",
-    body: "Built-in progression, reminders, and routines help users keep going through the stretch when most people fall off after discharge.",
+    body: "Built-in reminders, routines, and progression help patients stay on track after discharge.",
   },
   {
     eyebrow: "Confidence",
     title: "Reduce fear of doing recovery alone",
-    body: "The system is designed to make patients feel more certain, more supported, and less likely to avoid movement out of fear of reinjury.",
+    body: "Bloom helps patients feel more supported and less afraid of movement or reinjury.",
   },
   {
     eyebrow: "Continuity",
     title: "Continue care beyond insurance coverage",
-    body: "Bloom bridges the gap between formal therapy and full recovery with a premium continuation-of-care experience at home.",
-  },
-];
-
-const collectionCards = [
-  {
-    name: "General Mobility Kit",
-    tone: "Full-body mobility and movement restoration for patients recovering from general injury, overuse, or returning to activity after time off.",
-  },
-  {
-    name: "Shoulder Recovery",
-    tone: "Built for rotator cuff repair, labrum surgery, and shoulder impingement rehab with tools selected for shoulder-specific range-of-motion demands.",
-  },
-  {
-    name: "Knee Recovery Kit",
-    tone: "Designed for ACL reconstruction, total knee replacement, and meniscus recovery with tools shaped around common post-surgical knee protocols.",
+    body: "Bloom extends recovery beyond formal therapy with a structured continuation-of-care system at home.",
   },
 ];
 
@@ -174,7 +159,6 @@ function LandingPage() {
   const chromeRef = useRef<HTMLDivElement | null>(null);
   const nextSectionRef = useRef<HTMLElement | null>(null);
   const [showFloatingUi, setShowFloatingUi] = useState(true);
-  const [featureStart, setFeatureStart] = useState(0);
   const { scrollYProgress } = useScroll({
     target: heroShellRef,
     offset: ["start start", "end start"],
@@ -212,19 +196,6 @@ function LandingPage() {
   );
   const textY = useTransform(smoothProgress, [0, 1], ["-3%", "-7%"]);
   const textBlur = useTransform(smoothProgress, [0, 0.77], [0, 1.5]);
-  const visibleFeatureCards = Array.from({ length: 3 }, (_, index) => {
-    const cardIndex = (featureStart + index) % featureCards.length;
-    return {
-      ...featureCards[cardIndex],
-      cardIndex,
-    };
-  });
-  const previousFeature =
-    featureCards[
-      (featureStart - 1 + featureCards.length) % featureCards.length
-    ];
-  const nextFeature =
-    featureCards[(featureStart + visibleFeatureCards.length) % featureCards.length];
 
   useEffect(() => {
     let lastY = window.scrollY;
@@ -403,7 +374,14 @@ function LandingPage() {
             <div className="section-heading">
               <p className="eyebrow">How it works</p>
               <h2>
-                Bloom bridges the gap between PT discharge and full recovery.
+                Bridge the gap between{" "}
+                <span className="section-emphasis section-emphasis-cool">
+                  discharge
+                </span>{" "}
+                and{" "}
+                <span className="section-emphasis section-emphasis-warm">
+                  recovery.
+                </span>
               </h2>
               <p className="section-copy">
                 After physical therapy ends, many patients are left without
@@ -420,56 +398,10 @@ function LandingPage() {
             </div>
           </div>
 
-          <div className="feature-carousel-controls">
-            <button
-              type="button"
-              className="feature-carousel-preview feature-carousel-preview-left"
-              aria-label={`Previous feature: ${previousFeature.title}`}
-              onClick={() =>
-                setFeatureStart(
-                  (current) =>
-                    (current - 1 + featureCards.length) % featureCards.length,
-                )
-              }
-            >
-              <span className="feature-carousel-arrow" aria-hidden="true">
-                ‹
-              </span>
-              <span className="feature-carousel-copy">
-                <span className="feature-carousel-eyebrow">
-                  {previousFeature.eyebrow}
-                </span>
-                <span className="feature-carousel-title">
-                  {previousFeature.title}
-                </span>
-              </span>
-            </button>
-            <button
-              type="button"
-              className="feature-carousel-preview feature-carousel-preview-right"
-              aria-label={`Next feature: ${nextFeature.title}`}
-              onClick={() =>
-                setFeatureStart((current) => (current + 1) % featureCards.length)
-              }
-            >
-              <span className="feature-carousel-copy">
-                <span className="feature-carousel-eyebrow">
-                  {nextFeature.eyebrow}
-                </span>
-                <span className="feature-carousel-title">
-                  {nextFeature.title}
-                </span>
-              </span>
-              <span className="feature-carousel-arrow" aria-hidden="true">
-                ›
-              </span>
-            </button>
-          </div>
-
-          <div className="feature-grid feature-grid-carousel">
-            {visibleFeatureCards.map((feature, index) => (
+          <div className="feature-grid">
+            {featureCards.map((feature, index) => (
               <article
-                key={`${feature.title}-${featureStart}-${index}`}
+                key={feature.title}
                 className={`feature-card feature-${index + 1}`}
               >
                 <p className="eyebrow">{feature.eyebrow}</p>
@@ -491,7 +423,7 @@ function LandingPage() {
 
             <div className="bundle-copy">
               <p className="eyebrow">Why BLOOM</p>
-              <h2>More than equipment. A continuation-of-care system.</h2>
+              <h2>More than equipment.</h2>
               <p className="section-copy">
                 Bloom is designed for the moment patients are still healing but
                 no longer have regular access to their therapist. The product
@@ -560,6 +492,23 @@ function LandingPage() {
           </div>
         </section>
 
+        <section className="collection-section" id="collection">
+          <div className="section-heading">
+            <p className="eyebrow">Recovery collection</p>
+            <h2>
+              Three launch kits built around the recovery paths patients face
+              most.
+            </h2>
+          </div>
+
+          <div className="collection-hero-card">
+            <img
+              src="/videos/4boxes.png"
+              alt="Four Bloom Recovery kits in different colors"
+            />
+          </div>
+        </section>
+
         <section className="rental-section">
           <div className="bundle-layout rental-layout">
             <div className="bundle-copy">
@@ -610,37 +559,6 @@ function LandingPage() {
           </div>
         </section>
 
-        <section className="collection-section" id="collection">
-          <div className="section-heading">
-            <p className="eyebrow">Recovery collection</p>
-            <h2>
-              Three launch kits built around the recovery paths patients face
-              most.
-            </h2>
-            <p className="section-copy">
-              The launch collection includes a general mobility option plus
-              knee- and shoulder-specific kits, giving Bloom a clearer clinical
-              story and a more realistic path to product-market fit.
-            </p>
-          </div>
-
-          <div className="collection-hero-card">
-            <img
-              src="/videos/4boxes.png"
-              alt="Four Bloom Recovery kits in different colors"
-            />
-          </div>
-
-          <div className="collection-grid">
-            {collectionCards.map((collection) => (
-              <article key={collection.name} className="collection-card">
-                <h3>{collection.name}</h3>
-                <p>{collection.tone}</p>
-              </article>
-            ))}
-          </div>
-        </section>
-
         <section className="membership-section" id="memberships">
           <motion.div
             className="section-heading membership-heading"
@@ -650,10 +568,10 @@ function LandingPage() {
             transition={{ duration: 0.7, ease: "easeOut" }}
           >
             <p className="eyebrow">Choose your kit</p>
-            <h2>Built for your recovery. Specific to your injury.</h2>
+            <h2>Built for recovery. Specific to your injury.</h2>
             <p className="section-copy">
-              Every kit ships with the Bloom app, a laminated exercise guide
-              card, and a welcome setup.
+              Every kit includes the essentials to get started, with the Bloom
+              app available as an optional add-on for guided support.
             </p>
           </motion.div>
 

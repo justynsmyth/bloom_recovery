@@ -398,6 +398,12 @@
   background: #f4f1fb;
 }
 
+.bundle-section {
+  background:
+    linear-gradient(180deg, rgba(255, 233, 242, 0.82), rgba(245, 239, 248, 0.96)),
+    #f7edf4;
+}
+
 .app-loop-section {
   padding-top: 1rem;
   background:
@@ -477,6 +483,17 @@
   grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
 }
 
+.rental-section .eyebrow {
+  color: #3f809f;
+}
+
+.rental-section .bundle-copy h2 {
+  font-size: clamp(2.35rem, 3.8vw, 3.5rem);
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  color: #17141f;
+}
+
 .rental-points article {
   background:
     linear-gradient(180deg, rgba(206, 233, 255, 0.28), rgba(255, 255, 255, 0.78));
@@ -509,6 +526,28 @@
 .section-heading h2,
 .site-footer h2 {
   font-size: clamp(2.4rem, 4vw, 4.4rem);
+}
+
+.bundle-copy h2,
+.app-loop-heading h2,
+.collection-section .section-heading h2,
+.membership-heading h2 {
+  font-size: clamp(3rem, 5vw, 5rem);
+  line-height: 0.96;
+  letter-spacing: -0.045em;
+  color: #17141f;
+}
+
+.section-emphasis {
+  display: inline-block;
+}
+
+.section-emphasis-cool {
+  color: #3f809f;
+}
+
+.section-emphasis-warm {
+  color: var(--accent);
 }
 
 .section-copy,
@@ -572,71 +611,6 @@
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
-.feature-carousel-controls {
-  width: min(1200px, calc(100% - 2rem));
-  margin: 0 auto 1rem;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.65rem;
-}
-
-.feature-carousel-preview {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.9rem;
-  min-height: 4.5rem;
-  padding: 0.85rem 1rem;
-  border-radius: 1.25rem;
-  border: 1px solid rgba(161, 114, 145, 0.24);
-  background: rgba(255, 255, 255, 0.74);
-  color: #17384a;
-  text-align: left;
-  box-shadow: 0 12px 28px rgba(164, 134, 155, 0.12);
-}
-
-.feature-carousel-preview:hover {
-  transform: none;
-  background: rgba(255, 255, 255, 0.92);
-}
-
-.feature-carousel-preview-right {
-  text-align: right;
-}
-
-.feature-carousel-copy {
-  display: grid;
-  gap: 0.2rem;
-  min-width: 0;
-}
-
-.feature-carousel-eyebrow {
-  color: #3f809f;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
-.feature-carousel-title {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-family: var(--font-display);
-  font-size: 1rem;
-  color: #17384a;
-}
-
-.feature-carousel-arrow {
-  flex-shrink: 0;
-  font-size: 1.6rem;
-  line-height: 1;
-}
-
-.feature-grid-carousel {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
 .feature-card {
   min-height: 320px;
   padding: 1.4rem;
@@ -690,6 +664,10 @@
   gap: 1rem;
 }
 
+.bundle-copy .eyebrow {
+  color: var(--accent);
+}
+
 .bundle-points {
   grid-template-columns: repeat(3, minmax(0, 1fr));
   margin-top: 0.5rem;
@@ -728,11 +706,6 @@
 
 .membership-heading .eyebrow {
   color: #3f809f;
-}
-
-.membership-heading h2 {
-  font-size: clamp(3rem, 5.6vw, 5.6rem);
-  color: #17141f;
 }
 
 .membership-heading .section-copy {
@@ -2359,14 +2332,6 @@
 
   .collection-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .feature-grid-carousel {
-    grid-template-columns: 1fr;
-  }
-
-  .feature-carousel-controls {
-    grid-template-columns: 1fr;
   }
 
   .membership-aside--row {
