@@ -161,6 +161,7 @@
   min-height: 88vh;
   margin-top: 0;
   padding-top: 9.5rem;
+  padding-bottom: 2.25rem;
   overflow: hidden;
 }
 
@@ -259,13 +260,8 @@
 }
 
 .hero-visual {
-  position: absolute;
-  top: 2.5rem;
-  right: 0;
-  left: auto;
-  width: 60vw;
-  height: 82vh;
-  z-index: 0;
+  position: relative;
+  min-height: min(82vh, 50rem);
   overflow: hidden;
   background:
     linear-gradient(
@@ -281,31 +277,37 @@
   position: relative;
   z-index: 4;
   display: grid;
+  grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
   align-items: stretch;
+  gap: clamp(1.5rem, 3vw, 3rem);
   min-height: calc(88vh - 9.5rem);
-  width: min(1500px, calc(100% - 0.25rem));
-  margin: 0 auto 0 max(0.125rem, calc((100vw - 1500px) / 2));
-  padding: 2.5rem 0 2.25rem;
-}
-
-.hero-left-backdrop {
-  position: absolute;
-  inset: 0 calc(60vw) 0 0;
-  background: #000000;
-  pointer-events: none;
-  z-index: 1;
+  width: min(1400px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 1.5rem 0 0;
 }
 
 .hero-copy {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  max-width: 500px;
-  min-height: 100%;
-  padding-top: 0;
-  margin-left: 0;
+  min-height: min(82vh, 50rem);
+  padding: clamp(1.5rem, 3vw, 3rem);
   position: relative;
+  overflow: hidden;
   z-index: 4;
+}
+
+.hero-copy-fade {
+  position: absolute;
+  inset: 0;
+  background: #000000;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero-copy > * {
+  position: relative;
+  z-index: 1;
 }
 
 .hero-video {
@@ -566,6 +568,15 @@
   font-weight: 700;
 }
 
+.plan-actions {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.plan-link {
+  width: 100%;
+}
+
 .membership-aside {
   border-radius: 2rem;
   background: #101117;
@@ -598,6 +609,43 @@
   gap: 0.8rem;
 }
 
+.subscription-page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 2rem;
+}
+
+.subscription-card {
+  width: min(680px, 100%);
+  padding: clamp(1.5rem, 4vw, 3rem);
+  border-radius: 2rem;
+  background: rgba(255, 251, 255, 0.84);
+  border: 1px solid var(--panel-border);
+  box-shadow: 0 22px 52px rgba(164, 134, 155, 0.16);
+}
+
+.subscription-card h1 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+}
+
+.subscription-copy,
+.subscription-note {
+  margin: 1rem 0 0;
+  color: var(--text-muted);
+}
+
+.subscription-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+  margin-top: 1.5rem;
+}
+
 @media (max-width: 1080px) {
   .intro-grid,
   .bundle-layout,
@@ -615,24 +663,18 @@
 
   .hero-content {
     min-height: auto;
+    grid-template-columns: minmax(0, 0.88fr) minmax(0, 1.12fr);
     width: min(100% - 2rem, 1200px);
     margin: 0 auto;
-    padding-top: 4.5rem;
+    padding-top: 2rem;
   }
 
   .hero-copy {
-    min-height: 62vh;
-    padding-top: 0;
-    margin-left: 0;
-  }
-
-  .hero-left-backdrop {
-    right: calc(56vw - 1px);
+    min-height: 64vh;
   }
 
   .hero-visual {
-    width: 56vw;
-    top: 9.5rem;
+    min-height: 64vh;
   }
 
   .collection-grid {
@@ -667,7 +709,8 @@
 
   .hero-content {
     display: flex;
-    align-items: flex-start;
+    flex-direction: column;
+    align-items: stretch;
     width: min(100% - 2rem, 1200px);
     margin: 0 auto;
     padding-top: 1rem;
@@ -677,10 +720,9 @@
   .hero-copy {
     width: 100%;
     min-height: auto;
-    padding-top: 0;
+    padding: 0.5rem 0.5rem 0;
     padding-left: 0.5rem;
     opacity: 1;
-    margin-left: 0;
     max-width: 32rem;
   }
 
@@ -698,16 +740,11 @@
     text-wrap: balance;
   }
 
-  .hero-left-backdrop {
-    display: none;
-  }
-
   .hero-visual {
-    position: relative;
-    inset: auto;
-    width: min(100% - 2rem, 1200px);
+    width: 100%;
     height: 24rem;
-    margin: 0 auto;
+    min-height: 0;
+    margin: 0;
     border-radius: 1.75rem;
   }
 
@@ -723,6 +760,10 @@
 
   .site-footer {
     display: grid;
+  }
+
+  .subscription-actions {
+    flex-direction: column;
   }
 }
 
