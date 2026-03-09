@@ -39,16 +39,22 @@ const appScreens = [
     title: "Patient home",
     subtitle: "Daily progress, routines, and session streaks in one view.",
     variant: "progress",
+    image: "/videos/singlebox.png",
+    imageAlt: "Bloom Recovery product photo representing the patient home experience",
   },
   {
     title: "Recovery plan",
     subtitle: "Structured exercise blocks with clear progression cues.",
     variant: "plan",
+    image: "/videos/general_recover.png",
+    imageAlt: "Recovery photo representing a structured Bloom Recovery plan",
   },
   {
     title: "Clinic dashboard",
     subtitle: "Therapists can review adherence without extra admin work.",
     variant: "dashboard",
+    image: "/videos/soft_box_natural.png",
+    imageAlt: "Bloom Recovery product photo representing the clinic dashboard view",
   },
 ];
 
@@ -282,7 +288,7 @@ function LandingPage() {
             </nav>
 
             <Link className="cta-link" to="/subscribe/bloom-one">
-              Start trial
+              Choose kit
             </Link>
           </header>
         </div>
@@ -491,21 +497,12 @@ function LandingPage() {
                 <article key={screen.title} className="app-screen-card">
                   <div
                     className={`app-screen-placeholder app-screen-placeholder--${screen.variant}`}
-                    aria-hidden="true"
                   >
-                    <div className="app-screen-topbar">
-                      <span />
-                      <span />
-                      <span />
-                    </div>
-                    <div className="app-screen-body">
-                      <div className="app-screen-panel app-screen-panel--hero" />
-                      <div className="app-screen-row">
-                        <div className="app-screen-panel app-screen-panel--sm" />
-                        <div className="app-screen-panel app-screen-panel--sm" />
-                      </div>
-                      <div className="app-screen-panel app-screen-panel--wide" />
-                    </div>
+                    <img
+                      className="app-screen-image"
+                      src={screen.image}
+                      alt={screen.imageAlt}
+                    />
                   </div>
                   <h3>{screen.title}</h3>
                   <p>{screen.subtitle}</p>
@@ -581,8 +578,8 @@ function LandingPage() {
 
             <div className="bundle-image-card rental-image-card">
               <img
-                src="/videos/box_content.png"
-                alt="Bloom Recovery kit contents and tools laid out as part of a rentable recovery system"
+                src="/videos/rental.png"
+                alt="Bloom Recovery rental tools and equipment"
               />
             </div>
           </div>
@@ -633,7 +630,6 @@ function LandingPage() {
                   >
                     Choose kit
                   </Link>
-                  <a href="#footer">Learn more</a>
                 </div>
               </article>
             ))}
